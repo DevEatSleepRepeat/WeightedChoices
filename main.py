@@ -48,6 +48,8 @@ def get_weights(choices):
             update_data(i, j)
 
 def main():
-    print("Weighted Choices V0.7 Beta")
-    items = ["A + B", "B + C", "C + D", "D + E"]
+    print("Weighted Choices V0.7 Beta\n\n")
+    items = ["Pancakes", "Bacon", "Eggs", "Grits", "Waffles", "Bagles", "Sausege"]
     get_weights(items)
+    
+main()
