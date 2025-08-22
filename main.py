@@ -1,6 +1,12 @@
 import sqlite3, time
 
-#Setup Database
+# Intro
+print("""____________________________________________
+|=================WCTbCB===================|
+|=Weighted Choices Text-based Concept Beta=|
+|=================v0.7.2===================|""")
+
+# Setup Database
 rtime = round(time.time())
 save_name = "weights_"+str(rtime)+".db" # Make Filename
 
@@ -47,8 +53,9 @@ def get_weights(choices):
             update_data(i, j)
 
 def main():
-    print("Weighted Choices V0.7 Beta\n\n")
-    items = ["Pancakes", "Bacon", "Eggs", "Grits", "Waffles", "Bagles", "Sausage"]
-    get_weights(items)
-    
+    print("|____Press [ENTER] to begin!_______________|")
+    input()
+    breakfast = ["Pancakes", "Bacon","Eggs", "Grits", "Waffles", "Bagles", "Sausage"]
+    get_weights(breakfast)
+
 main()
