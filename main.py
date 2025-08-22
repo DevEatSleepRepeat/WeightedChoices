@@ -1,5 +1,4 @@
 import sqlite3, time
-from os.path import split
 
 #Setup Database
 rtime = round(time.time())
