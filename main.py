@@ -48,7 +48,7 @@ def get_weights(choices):
 
 def main():
     print("Weighted Choices V0.7 Beta\n\n")
-    items = ["Pancakes", "Bacon", "Eggs", "Grits", "Waffles", "Bagles", "Sausege"]
+    items = ["Pancakes", "Bacon", "Eggs", "Grits", "Waffles", "Bagles", "Sausage"]
     get_weights(items)
     
 main()
