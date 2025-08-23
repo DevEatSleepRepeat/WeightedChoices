@@ -58,4 +58,5 @@ def main():
     breakfast = ["Pancakes", "Bacon", "Eggs", "Grits", "Waffles", "Bagles", "Sausage"]
     get_weights(breakfast)
     print("\nSuccessfully Completed!\nOutput weights saved to "+save_name)
+
 main()
