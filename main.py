@@ -13,7 +13,7 @@ save_name = "weights_"+str(rtime)+".db" # Make Filename
 cw_lib = sqlite3.connect(save_name)
 cur = cw_lib.cursor()
 existing_combos = []
-cur.execute("CREATE TABLE IF NOT EXISTS weights (id INTEGER, choice TEXT, weight REAL)") # Create Table
+cur.execute("CREATE TABLE IF NOT EXISTS weights (choice TEXT, weight REAL)") # Create Table
 cw_lib.commit() # Commit Changes
 
 def null():
@@ -39,11 +39,9 @@ def update_data(a,b):
 
 def get_weights(choices):
     global existing_combos
-    count = 1
     # Create Base Data
     for i in choices:
-        cur.execute("INSERT OR IGNORE INTO weights VALUES (?, ?, ?)", (str(count), i, "0.0"))
-        count += 1
+        cur.execute("INSERT OR IGNORE INTO weights VALUES (?, ?)", (i, "0.0"))
     cw_lib.commit()
     # Start the data collection processes.
     for idx_i, i in enumerate(choices):
@@ -59,6 +57,11 @@ def main():
     get_weights(breakfast)
     #print("\nSuccessfully Completed!\nOutput weights saved to "+save_name)
     print("Your Results:")
+    output_data = []
     for row in cur.execute("SELECT * FROM weights"):
-        print(row)
+        output_data.append(row)
+    print(output_data)
+    for r in output_data:
+        for n in r:
+            print(n)
 main()
