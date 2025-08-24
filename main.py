@@ -7,8 +7,8 @@ print("""____________________________________________
 |=================v0.7.2===================|""")
 
 # Setup Database
-rtime = round(time.time())
-save_name = "weights_"+str(rtime)+".db" # Make Filename
+r_time = round(time.time())
+save_name = ".temp/weights_"+str(r_time)+".db" # Make Filename
 
 cw_lib = sqlite3.connect(save_name)
 cur = cw_lib.cursor()
@@ -56,12 +56,14 @@ def main():
     breakfast = ["Pancakes", "Bacon", "Eggs", "Grits", "Waffles", "Bagles", "Sausage"]
     get_weights(breakfast)
     #print("\nSuccessfully Completed!\nOutput weights saved to "+save_name)
+    cur.execute("SELECT * FROM weights ORDER BY weight DESC;")
+    cw_lib.commit()
     print("Your Results:")
     output_data = []
     for row in cur.execute("SELECT * FROM weights"):
         output_data.append(row)
-    print(output_data)
     for r in output_data:
         for n in r:
             print(n)
+
 main()
