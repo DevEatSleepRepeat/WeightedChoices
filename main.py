@@ -40,6 +40,7 @@ def update_data(a,b):
         print("Invalid Input, choices added at random.")
         cur.execute("UPDATE weights SET weight = weight + 0.1 WHERE choice = ?", (a,))
         cur.execute("UPDATE weights SET weight = weight - 0.1 WHERE choice = ?", (b,))
+        cw_lib.commit()
 
 def get_weights(choices):
     global existing_combos
@@ -62,8 +63,9 @@ def main():
     #print("\nSuccessfully Completed!\nOutput weights saved to "+save_name)
     cur.execute("SELECT * FROM weights ORDER BY weight DESC;")
     cw_lib.commit()
-    print("\n\n|=========================================|\n|=Your Results:===========================|")
+    print("\n\n|=========================================|\n|=Your Results:===========================|\n|=Rank-Item-Weight========================|")
     output_data = []
+    count = 0
     for row in cur.execute("SELECT * FROM weights"):
         output_data.append(row)
     for r in output_data:
@@ -73,8 +75,9 @@ def main():
                 num = round(n,1)
                 line += str(num)
             except TypeError:
-                line += "|="+n+" "
-        print(line)
+                line += n+" "
+        count += 1
+        print("| "+str(count)+" "+line)
         print("|=========================================|")
 
 main()
