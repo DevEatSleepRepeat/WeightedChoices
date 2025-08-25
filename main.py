@@ -4,7 +4,7 @@ import sqlite3, time
 print("""____________________________________________
 |=================WCTbCB===================|
 |=Weighted Choices Text-based Concept Beta=|
-|=================v0.7.2===================|""")
+|=================v0.9.4===================|""")
 
 # Setup Database
 r_time = round(time.time())
@@ -26,6 +26,7 @@ def update_data(a,b):
     existing_combos.append(a)
     print("Press 1 for " + a + ", and 2 for " + b)
     inp = input(">>> ")
+    print()
     try:
         inp = int(inp)
         if inp == 1:
@@ -70,14 +71,18 @@ def main():
         output_data.append(row)
     for r in output_data:
         line = ""
+        count += 1
         for n in r:
             try:
                 num = round(n,1)
                 line += str(num)
             except TypeError:
-                line += n+" "
-        count += 1
-        print("| "+str(count)+" "+line)
+                line += "| " + str(count) + " " + n + " "
+        needed_space = 42-len(line)
+        spaces = ""
+        for i in range(0,needed_space):
+            spaces += " "
+        print(line+spaces+"|")
         print("|=========================================|")
 
 main()
