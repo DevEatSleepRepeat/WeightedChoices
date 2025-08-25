@@ -10,7 +10,6 @@ print("""____________________________________________
 # Setup Database
 r_time = round(time.time())
 save_name = "weights_"+str(r_time)+".db" # Make Filename
-
 cw_lib = sqlite3.connect(save_name)
 cur = cw_lib.cursor()
 existing_combos = []
@@ -75,7 +74,7 @@ def main():
         count += 1
         for n in r:
             try:
-                num = round(n,1)
+                num = round(n,2)
                 line += str(num)
             except TypeError:
                 line += "| " + str(count) + " " + n + " "
