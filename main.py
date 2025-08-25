@@ -8,7 +8,7 @@ print("""____________________________________________
 
 # Setup Database
 r_time = round(time.time())
-save_name = ".temp/weights_"+str(r_time)+".db" # Make Filename
+save_name = "weights_"+str(r_time)+".db" # Make Filename
 
 cw_lib = sqlite3.connect(save_name)
 cur = cw_lib.cursor()
@@ -25,17 +25,21 @@ def update_data(a,b):
     print(a + " or " + b)
     existing_combos.append(a)
     print("Press 1 for " + a + ", and 2 for " + b)
-    inp = int(input(">>> "))
-    if inp == 1:
+    inp = input(">>> ")
+    try:
+        inp = int(inp)
+        if inp == 1:
+            cur.execute("UPDATE weights SET weight = weight + 0.1 WHERE choice = ?", (a,))
+            cur.execute("UPDATE weights SET weight = weight - 0.1 WHERE choice = ?", (b,))
+            cw_lib.commit()
+        elif inp == 2:
+            cur.execute("UPDATE weights SET weight = weight - 0.1 WHERE choice = ?", (a,))
+            cur.execute("UPDATE weights SET weight = weight + 0.1 WHERE choice = ?", (b,))
+            cw_lib.commit()
+    except ValueError:
+        print("Invalid Input, choices added at random.")
         cur.execute("UPDATE weights SET weight = weight + 0.1 WHERE choice = ?", (a,))
         cur.execute("UPDATE weights SET weight = weight - 0.1 WHERE choice = ?", (b,))
-        cw_lib.commit()
-    elif inp == 2:
-        cur.execute("UPDATE weights SET weight = weight - 0.1 WHERE choice = ?", (a,))
-        cur.execute("UPDATE weights SET weight = weight + 0.1 WHERE choice = ?", (b,))
-        cw_lib.commit()
-    else:
-        null()
 
 def get_weights(choices):
     global existing_combos
@@ -58,12 +62,19 @@ def main():
     #print("\nSuccessfully Completed!\nOutput weights saved to "+save_name)
     cur.execute("SELECT * FROM weights ORDER BY weight DESC;")
     cw_lib.commit()
-    print("Your Results:")
+    print("\n\n|=========================================|\n|=Your Results:===========================|")
     output_data = []
     for row in cur.execute("SELECT * FROM weights"):
         output_data.append(row)
     for r in output_data:
+        line = ""
         for n in r:
-            print(n)
+            try:
+                num = round(n,1)
+                line += str(num)
+            except TypeError:
+                line += "|="+n+" "
+        print(line)
+        print("|=========================================|")
 
 main()
