@@ -4,7 +4,8 @@ import sqlite3, time
 print("""____________________________________________
 |=================WCTbCB===================|
 |=Weighted Choices Text-based Concept Beta=|
-|=================v0.9.4===================|""")
+|================v1.0.0-BE-Stable==========|
+|=======================Breakfast-Edition==|""")
 
 # Setup Database
 r_time = round(time.time())
@@ -24,7 +25,7 @@ def update_data(a,b):
     global existing_combos
     print(a + " or " + b)
     existing_combos.append(a)
-    print("Press 1 for " + a + ", and 2 for " + b)
+    print("Press [1] for " + a + ", and [2] for " + b)
     inp = input(">>> ")
     print()
     try:

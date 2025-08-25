@@ -1,7 +1,8 @@
 ____________________________________________
 |=================WCTbCB===================|
 |=Weighted Choices Text-based Concept Beta=|
-|=================v0.7.2===================|
+|================v1.0.0-BE-Stable==========|
+|=======================Breakfast-Edition==|
 |____Press [ENTER] to begin!_______________|
 
 Press 1 for Waffles, and 2 for Sausag
