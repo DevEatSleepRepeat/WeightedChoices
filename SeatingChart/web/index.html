@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Seating Chart Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #ececec;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        input, textarea, button {
+            border: none;
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        button {
+            cursor: pointer;
+            background: #3498db;
+            color: white;
+            border: none;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1e6697;
+        }
+
+        .tables {
+            margin-top: 25px;
+            padding: 15px;
+            background: white;
+            border-radius: 25px;
+        }
+
+        .table-box {
+            margin: 10px 0;
+            padding: 10px;
+            background: #eee;
+            border-radius: 5px;
+        }
+        .action {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        .tableVisual {
+            background: #ececec;
+            border-radius: 10px;
+            text-align: center;
+            margin: 10px 10px;
+            padding: 10px;
+            border: 3px solid #2980b9;
+        }
+    </style>
+</head>
+<body>
+        <h1>Seating Chart Generator</h1>
+
+        <h2>Title of Seating Chart:</h2>
+        <input type="text" id="seatingTitle" value="Generated Seating Chart">
+        <h2>Students (comma separated):</h2>
+        <textarea id="students" rows="3">Alice,Bob,Charlie,David,Eva,Frank</textarea>
+
+        <h2>Number of Tables:</h2>
+        <input style="width: 300px;" type="number" id="tables" value="2">
+
+        <h2>Rules (studentA:studentB, comma separated):</h2>
+        <textarea id="rules" rows="3">Bob:Charlie,David:Frank</textarea>
+
+        <div class="action">
+            <button onclick="generate()">Generate Seating Chart</button>
+            <p>&nbsp;&nbsp;&nbsp;</p>
+            <button onclick="download()">Print Seating Chart</button>
+        </div>
+    <div id="output" class="tables"></div>
+
+    <script>
+        async function generate() {
+            const output = document.getElementById("output");
+            output.innerHTML = "<h2>Loading...</h2>"
+            const studentsText = document.getElementById("students").value;
+            const tables = parseInt(document.getElementById("tables").value);
+            const rulesText = document.getElementById("rules").value;
+
+            // Convert "Alice,Bob" → ["Alice","Bob"]
+            const students = studentsText.split(",").map(s => s.trim()).filter(s => s);
+
+            // Convert "Bob:Charlie,David:Eva" → { Bob: "Charlie", David: "Eva" }
+            const rules = {};
+            rulesText.split(",").forEach(pair => {
+                if (pair.includes(":")) {
+                    const [a, b] = pair.split(":").map(s => s.trim());
+                    if (a && b) rules[a] = b;
+                }
+            });
+
+            const res = await fetch("http://localhost:80/generate", {   /* CHANGE IP WHEN HOSTED */
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    students: students,
+                    tables: tables,
+                    rules: rules
+                })
+            });
+
+            const data = await res.json();
+            displayResult(data.tables);
+        }
+
+        function displayResult(tables) {
+            const output = document.getElementById("output");
+            let chartTitle = document.getElementById("seatingTitle").value;
+            output.innerHTML = `<h2>${chartTitle}</h2>`
+
+            tables.forEach((table, i) => {
+                const div = document.createElement("div");
+                div.className = "tables";
+                div.innerHTML = `<strong>Table ${i + 1}:</strong>${table.join(" ")}`;
+                output.appendChild(div);
+            });
+        }
+        async function download() {
+            await generate();
+            const printContents = document.getElementById("output").innerHTML;
+            const originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+
+</body>
+</html>
